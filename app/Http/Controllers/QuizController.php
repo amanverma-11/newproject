@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Quiz;
 use Inertia\Inertia;
 use App\Models\Question;
 use Illuminate\Http\Request;
@@ -10,7 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
-    public function show()
+
+    public function showQuizzes(){
+        $quizzes = Quiz::all();
+        return Inertia::render('Quizzes', ['quizzes' => $quizzes]);
+    }
+
+    public function showQuiz()
     {
         $questions = Question::with('options')->get();
         $user = Auth::user();

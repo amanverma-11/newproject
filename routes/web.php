@@ -34,7 +34,7 @@ Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit'
 Route::put('/posts/{id}', [PostController::class, 'update'])->name('post.update');
 Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.delete');
 
-//Users
+//Users Registration and Login
 Route::get('/register', function () {
     return Inertia::render('Register');
 });
@@ -45,11 +45,15 @@ Route::get('/login', function(){
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-//Quiz
-Route::get('/quiz', [QuizController::class, 'show'])->name('quiz.show');
-Route::post('/submit-quiz', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
+//Questions for the quiz
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('question.create');
 Route::post('/questions/create', [QuestionController::class, 'store']);
+
+
+//Quiz
+Route::get('/quizzes', [QuizController::class, 'showQuizzes'])->name('quizes.show');
+Route::get('/quiz', [QuizController::class, 'showQuiz'])->name('quiz.show');
+Route::post('/submit-quiz', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
 
 
 
