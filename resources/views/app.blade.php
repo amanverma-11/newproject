@@ -9,6 +9,7 @@
         @vite('resources/js/app.js')
         @vite('resources/js/ziggy.js')
         @inertiaHead
+        @routes
     </head>
     <body class="bg-gray-100">
         @inertia

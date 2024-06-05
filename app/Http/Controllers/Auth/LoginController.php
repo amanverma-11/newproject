@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
+    public function showLoginForm(){
+        return Inertia::render('Login');
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -17,7 +23,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/quiz');
+            return redirect()->route('quizzes.show');
         }
 
         return back()->withErrors([

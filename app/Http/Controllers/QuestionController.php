@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quiz;
 use Inertia\Inertia;
 use App\Models\Option;
 use App\Models\Question;
@@ -9,15 +10,17 @@ use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
-    public function create()
+    public function showQuestionForm()
     {
-        return Inertia::render("CreateQuestion");
+        $quizzes = Quiz::all();
+        return Inertia::render("CreateQuestion", ['quizzes' => $quizzes]);
     }
 
-    public function store(Request $request)
+    public function createQuestion(Request $request)
     {
         // Validate the request data
         $validatedData = $request->validate([
+            'quiz_id' => 'required|exists:quizzes,id',
             'question' => 'required|string',
             'option1' => 'required|string',
             'option2' => 'required|string',
@@ -29,6 +32,7 @@ class QuestionController extends Controller
         // Create the question record
         $question = Question::create([
             'question' => $validatedData['question'],
+            'quiz_id' => $validatedData['quiz_id'],
         ]);
 
         // Create the options record

@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { Inertia } from "@inertiajs/inertia";
 import axios from "axios";
 
 export default {
@@ -140,14 +141,14 @@ export default {
         },
         submitQuiz() {
             axios
-                .post("/submit-quiz", { score: this.currentScore })
+                .post(route("quiz.submit", { score: this.currentScore }))
                 .then((response) => {
                     this.maxScore = response.data.maxScore;
                     alert(`Quiz completed! Your score: ${this.currentScore}`);
                     this.currentScore = 0;
                     this.currentQuestionIndex = 0;
                     this.droppedItem = null;
-                    window.location.href = "/quiz";
+                    Inertia.get(route("quizzes.show"));
                 })
                 .catch((error) => {
                     console.error(error);
@@ -155,9 +156,9 @@ export default {
         },
         logout() {
             axios
-                .post("/logout")
+                .post(route("logout"))
                 .then(() => {
-                    window.location.href = "/login";
+                    Inertia.get(route("login"));
                 })
                 .catch((error) => {
                     console.error(error);

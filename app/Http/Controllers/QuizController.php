@@ -17,9 +17,9 @@ class QuizController extends Controller
         return Inertia::render('Quizzes', ['quizzes' => $quizzes]);
     }
 
-    public function showQuiz()
+    public function showQuiz($id)
     {
-        $questions = Question::with('options')->get();
+        $questions = Question::with('options')->where('quiz_id', $id)->get();
         $user = Auth::user();
         return Inertia::render('Quiz', ['questions' => $questions, 'user' => $user]);
     }

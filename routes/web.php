@@ -35,25 +35,26 @@ Route::put('/posts/{id}', [PostController::class, 'update'])->name('post.update'
 Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('post.delete');
 
 //Users Registration and Login
-Route::get('/register', function () {
-    return Inertia::render('Register');
-});
-Route::post('/register', [RegisterController::class, 'store'])->name('register');
-Route::get('/login', function(){
-    return Inertia::render('Login');
-});
+Route::get('/register', [RegisterController::class, 'showRegistrationForm']);
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-//Questions for the quiz
-Route::get('/questions/create', [QuestionController::class, 'create'])->name('question.create');
-Route::post('/questions/create', [QuestionController::class, 'store']);
+Route::group(['middleware' => 'auth'], function(){
+    //Form to submit the question
+    Route::get('/question/create', [QuestionController::class, 'showQuestionForm'])->name('question.form');
+    //Store the question in the database
+    Route::post('/question/create', [QuestionController::class, 'createQuestion'])->name('question.create');
+    //Show quizzes
+    Route::get('/quizzes', [QuizController::class, 'showQuizzes'])->name('quizzes.show');
+    // Show a single quiz page 
+    Route::get('/quiz/{id}', [QuizController::class, 'showQuiz'])->name('quiz.show');
+    // Submitting the quiz
+    Route::post('/submit-quiz', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
+});
 
 
-//Quiz
-Route::get('/quizzes', [QuizController::class, 'showQuizzes'])->name('quizes.show');
-Route::get('/quiz', [QuizController::class, 'showQuiz'])->name('quiz.show');
-Route::post('/submit-quiz', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
 
 
 

@@ -38,7 +38,7 @@
                 <div class="mb-6">
                     <button
                         type="submit"
-                        class="w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                        class="w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300"
                     >
                         Login
                     </button>

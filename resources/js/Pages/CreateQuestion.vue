@@ -6,6 +6,29 @@
 
             <div class="mb-4">
                 <label
+                    for="quiz"
+                    class="block text-sm font-medium text-gray-700"
+                    >Quiz Name</label
+                >
+                <select
+                    id="quiz"
+                    v-model="selectedQuizId"
+                    class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    required
+                >
+                    <option value="" disabled>Select a quiz</option>
+                    <option
+                        v-for="quiz in quizzes"
+                        :key="quiz.id"
+                        :value="quiz.id"
+                    >
+                        {{ quiz.title }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label
                     for="question"
                     class="block text-sm font-medium text-gray-700"
                     >Question</label
@@ -102,14 +125,21 @@
 </template>
 
 <script>
+import { Inertia } from "@inertiajs/inertia";
 import axios from "axios";
 
 export default {
+    props: {
+        quizzes: Array,
+        required: true,
+    },
+
     data() {
         return {
             csrfToken: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
+            selectedQuizId: null,
             question: "",
             option1: "",
             option2: "",
@@ -122,6 +152,7 @@ export default {
         async addQuestion() {
             const formData = {
                 _token: this.csrfToken,
+                quiz_id: this.selectedQuizId,
                 question: this.question,
                 option1: this.option1,
                 option2: this.option2,
@@ -131,13 +162,14 @@ export default {
             };
 
             try {
-                await axios.post("/questions/create", formData);
+                await axios.post(route("question.create"), formData);
                 this.resetForm();
             } catch (error) {
                 console.error("Error submitting form:", error);
             }
         },
         resetForm() {
+            this.selectedQuizId = null;
             this.question = "";
             this.option1 = "";
             this.option2 = "";

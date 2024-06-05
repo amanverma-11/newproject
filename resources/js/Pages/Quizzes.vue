@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         playQuiz(id) {
-            Inertia.visit(route("quiz.show", { id }));
+            Inertia.visit(route("quiz.show", { id: id }));
         },
     },
 };
